@@ -13,9 +13,9 @@ import {
   TemplateRef,
 } from '@angular/core';
 
+import { COLUMN_COUNT, HEIGHT_UNIT } from './gridbox.constant';
 import { GridboxConfig, Widget } from './gridbox.interface';
 import { GridboxItemComponent } from './gridboxItem.component';
-import { HEIGHT_UNIT } from './gridbox.constant';
 
 @Component({
   selector: 'app-gridbox',
@@ -51,7 +51,7 @@ export class GridboxComponent implements OnChanges {
 
   @HostBinding('style.height.px') height?: number;
 
-  gridColumns = Array(12);
+  gridColumns = Array(COLUMN_COUNT);
   gridRows = [];
 
   #elRef: ElementRef<HTMLElement> = inject(ElementRef);

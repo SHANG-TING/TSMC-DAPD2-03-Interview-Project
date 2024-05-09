@@ -1,39 +1,23 @@
-:host {
-  display: flex;
-  flex-direction: column;
+table {
+  width: 100%;
   border: 1px solid black;
   box-sizing: border-box;
-  height: 100%;
 }
 
-.title {
-  font-size: 1rem;
-  font-weight: bold;
-  height: 50px;
-  display: flex;
-  padding: 0 10px;
-  align-items: center;
-  border-bottom: 1px solid black;
+th,
+td {
+  text-align: left;
+  padding: 10px;
 }
 
-.content {
-  flex-grow: 1;
-  overflow-y: auto;
+th {
+  background-color: black;
+  color: white;
+}
 
-  table {
-    width: 100%;
-    border: 1px solid black;
-    box-sizing: border-box;
-  }
-
-  th,
-  td {
-    text-align: left;
-    padding: 10px;
-  }
-
-  th {
-    background-color: black;
-    color: white;
-  }
+tbody td {
+  background-color: #C8C8C8;
+}
+tbody tr:nth-child(even) td {
+  background-color: #E6E6E6;
 }

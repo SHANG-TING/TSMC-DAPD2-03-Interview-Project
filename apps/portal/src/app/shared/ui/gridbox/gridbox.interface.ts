@@ -2,29 +2,35 @@ export interface GridboxConfig {
   widgets: Widget[];
 }
 
-export interface Widget<TOptions = object> {
+export interface Widget<
+  Type extends keyof WidgetOptionsCollection = keyof WidgetOptionsCollection
+> {
   id: string;
   title: string;
-  type: string;
+  type: Type;
   position: WidgetPosition;
-  options: TOptions;
+  options: WidgetOptionsCollection[Type];
 }
 
-export interface WidgetOptions {
-  headers?: WidgetHeader[];
-  data?: WidgetData[];
-  content?: string;
-  color?: string;
-  background?: string;
-}
+type WidgetOptionsCollection = {
+  grid: {
+    headers?: GridWidgetHeader[];
+    data?: GridWidgetData[];
+  };
+  text: {
+    content?: string;
+    color?: string;
+    background?: string;
+  };
+};
 
-interface WidgetData {
+interface GridWidgetData {
   name: string;
   role: string;
 }
 
-interface WidgetHeader {
-  fieldId: keyof WidgetData;
+interface GridWidgetHeader {
+  fieldId: keyof GridWidgetData;
   displayText: string;
 }
 

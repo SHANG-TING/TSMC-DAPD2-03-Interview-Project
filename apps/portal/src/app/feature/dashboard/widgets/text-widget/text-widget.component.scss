@@ -1,22 +1,4 @@
-:host {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid black;
-  box-sizing: border-box;
-  height: 100%;
-}
-.title {
-  font-size: 1rem;
-  font-weight: bold;
-  height: 50px;
-  display: flex;
-  padding: 0 10px;
-  align-items: center;
-  border-bottom: 1px solid black;
-}
 .content {
   font-size: 2rem;
-  flex-grow: 1;
   padding: 10px;
-  overflow-y: auto;
 }

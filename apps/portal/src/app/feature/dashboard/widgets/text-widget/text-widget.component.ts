@@ -18,13 +18,9 @@ import { Widget } from '../../../../shared/ui/gridbox/gridbox.interface';
       </span>
     </div>
   `,
-  styleUrl: './text-widget.component.scss',
+  styleUrls: ['../general-widget.scss', './text-widget.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TextWidgetComponent {
-  @Input() data!: Widget<{
-    color: string;
-    background: string;
-    content: string;
-  }>;
+  @Input() data!: Widget<'text'>;
 }
