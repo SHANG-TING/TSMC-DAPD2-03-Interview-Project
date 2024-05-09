@@ -2,19 +2,18 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
+  HostBinding,
   HostListener,
   inject,
   Input,
   OnChanges,
   OnInit,
-  Renderer2,
   SimpleChanges,
 } from '@angular/core';
 
 import { GridboxComponent } from './gridbox.component';
-import { Widget } from './gridbox.interface';
 import { HEIGHT_UNIT } from './gridbox.constant';
+import { Widget } from './gridbox.interface';
 
 @Component({
   selector: 'app-gridbox-item',
@@ -36,15 +35,16 @@ import { HEIGHT_UNIT } from './gridbox.constant';
 export class GridboxItemComponent implements OnInit, OnChanges {
   @Input() index!: number;
   @Input() widget!: Widget;
+
+  @HostBinding('style.transform') transform!: string;
+  @HostBinding('style.width.px') width!: number;
+  @HostBinding('style.height.px') height!: number;
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.#updateItemStyle();
   }
 
   gridboxComponent = inject(GridboxComponent);
-
-  #elRef = inject(ElementRef);
-  #renderer = inject(Renderer2);
 
   ngOnInit(): void {
     this.#updateItemStyle();
@@ -60,20 +60,10 @@ export class GridboxItemComponent implements OnInit, OnChanges {
     const colWidthUnit = this.gridboxComponent.columnWidthUnit;
     const { top, left, height, width } = this.widget.position;
 
-    this.#renderer.setStyle(
-      this.#elRef.nativeElement,
-      'transform',
-      `translate3d(${colWidthUnit * left}px, ${HEIGHT_UNIT * top}px, 0px)`
-    );
-    this.#renderer.setStyle(
-      this.#elRef.nativeElement,
-      'width',
-      `${colWidthUnit * width}px`
-    );
-    this.#renderer.setStyle(
-      this.#elRef.nativeElement,
-      'height',
-      `${HEIGHT_UNIT * height}px`
-    );
+    this.transform = `translate3d(${colWidthUnit * left}px, ${
+      HEIGHT_UNIT * top
+    }px, 0px)`;
+    this.width = colWidthUnit * width;
+    this.height = HEIGHT_UNIT * height;
   }
 }
