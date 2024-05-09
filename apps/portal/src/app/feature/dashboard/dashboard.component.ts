@@ -19,6 +19,7 @@ import {
   template: `
     <h2>dashboard works!</h2>
     <button (click)="addTextWidget()" style="margin: 10px 0;">Add Text Widget</button>
+    <button (click)="addGridWidget()" style="margin: 10px 0;">Add Grid Widget</button>
     <app-gridbox [config]="config">
       <ng-template #widget let-data>
         @defer (when data.type === 'text') {
@@ -89,7 +90,7 @@ export class DashboardComponent {
           type: 'text',
           position: {
             left: 6,
-            top: 6,
+            top: 7,
             width: 3,
             height: 3,
           },
@@ -97,6 +98,36 @@ export class DashboardComponent {
             content: 'Good night.',
             color: 'yellow',
             background: '#666',
+          },
+        },
+      ],
+    };
+  }
+
+  addGridWidget() {
+    this.config = {
+      ...this.config,
+      widgets: [
+        ...this.config.widgets,
+        {
+          id: 'widget-04',
+          title: 'Grid 2',
+          type: 'grid',
+          position: {
+            left: 6,
+            top: 3,
+            width: 6,
+            height: 4,
+          },
+          options: {
+            headers: [
+              { fieldId: 'name', displayText: 'User Name' },
+              { fieldId: 'role', displayText: 'User Role' },
+            ],
+            data: [
+              { name: 'Jeff', role: 'Engineer' },
+              { name: 'Declan', role: 'Engineer' },
+            ],
           },
         },
       ],
