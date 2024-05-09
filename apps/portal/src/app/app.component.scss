@@ -1,0 +1,26 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.topnav {
+  padding: 20px;
+  background-color: antiquewhite;
+  text-align: center;
+}
+
+.sidebar {
+  padding: 40px;
+  background-color: aqua;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+
+  main {
+    flex-grow: 1;
+  }
+}
