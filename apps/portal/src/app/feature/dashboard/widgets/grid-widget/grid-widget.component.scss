@@ -1,0 +1,39 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: bold;
+  height: 50px;
+  display: flex;
+  padding: 0 10px;
+  align-items: center;
+  border-bottom: 1px solid black;
+}
+
+.content {
+  flex-grow: 1;
+  overflow-y: auto;
+
+  table {
+    width: 100%;
+    border: 1px solid black;
+    box-sizing: border-box;
+  }
+
+  th,
+  td {
+    text-align: left;
+    padding: 10px;
+  }
+
+  th {
+    background-color: black;
+    color: white;
+  }
+}

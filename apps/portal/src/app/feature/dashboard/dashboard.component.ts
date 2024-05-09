@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { GridboxComponent } from '../../shared/ui/gridbox/gridbox.component';
+import { GridWidgetComponent } from './widgets/grid-widget/grid-widget.component';
+import { TextWidgetComponent } from './widgets/text-widget/text-widget.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,7 +12,11 @@ import { GridboxComponent } from '../../shared/ui/gridbox/gridbox.component';
     <h2>dashboard works!</h2>
     <app-gridbox [config]="config">
       <ng-template #widget let-data>
-        {{ data | json }}
+        @defer (when data.type === 'text') {
+        <app-text-widget [data]="data"></app-text-widget>
+        } @defer (when data.type === 'grid') {
+        <app-grid-widget [data]="data"></app-grid-widget>
+        }
       </ng-template>
     </app-gridbox>
   `,
@@ -19,6 +25,8 @@ import { GridboxComponent } from '../../shared/ui/gridbox/gridbox.component';
   imports: [
     CommonModule,
     GridboxComponent,
+    TextWidgetComponent,
+    GridWidgetComponent,
   ],
 })
 export class DashboardComponent {
