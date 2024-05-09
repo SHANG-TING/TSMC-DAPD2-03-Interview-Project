@@ -1,0 +1,9 @@
+:host {
+  box-sizing: border-box;
+  z-index: 1;
+  position: absolute;
+  overflow: hidden;
+  transition: .3s;
+  background: white;
+  user-select: text;
+}
