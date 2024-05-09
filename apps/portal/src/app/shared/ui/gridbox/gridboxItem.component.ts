@@ -20,14 +20,14 @@ import { HEIGHT_UNIT } from './gridbox.constant';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <ng-container *ngIf="this.gridboxComponent.widgetTemplateRef">
-      <ng-container
-        *ngTemplateOutlet="
-          this.gridboxComponent.widgetTemplateRef;
-          context: { $implicit: widget, i: index }
-        "
-      ></ng-container>
-    </ng-container>
+    @if (this.gridboxComponent.widgetTemplateRef) {
+    <ng-container
+      *ngTemplateOutlet="
+        this.gridboxComponent.widgetTemplateRef;
+        context: { $implicit: widget, i: index }
+      "
+    ></ng-container>
+    }
   `,
   styleUrl: './gridboxItem.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

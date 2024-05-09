@@ -13,25 +13,24 @@ import { Widget } from '../../../../shared/ui/gridbox/gridbox.interface';
       <table>
         <thead>
           <tr>
-            <th *ngFor="let header of data.options.headers">
-              {{ header.displayText }}
-            </th>
+            @for (header of data.options.headers; track header.fieldId) {
+            <th>{{ header.displayText }}</th>
+            }
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of data.options.data">
-            <td *ngFor="let header of data.options.headers">
-              {{ item?.[header.fieldId] }}
-            </td>
+          @for(item of data.options.data; track $index) {
+          <tr>
+            @for (header of data.options.headers; track header.fieldId) {
+            <td>{{ item?.[header.fieldId] }}</td>
+            }
           </tr>
+          }
         </tbody>
       </table>
     </div>
   `,
-  styleUrls: [
-    '../general-widget.scss',
-    './grid-widget.component.scss',
-  ],
+  styleUrls: ['../general-widget.scss', './grid-widget.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GridWidgetComponent {

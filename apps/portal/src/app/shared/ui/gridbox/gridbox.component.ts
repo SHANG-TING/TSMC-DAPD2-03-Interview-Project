@@ -22,20 +22,13 @@ import { GridboxItemComponent } from './gridboxItem.component';
   standalone: true,
   imports: [CommonModule, GridboxItemComponent],
   template: `
-    <div
-      class="gridbox-column"
-      *ngFor="let col of gridColumns; let i = index"
-      [ngStyle]="getGridColumnStyle(i)"
-    ></div>
-    <div
-      class="gridbox-row"
-      *ngFor="let row of gridRows; let i = index"
-      [ngStyle]="getGridRowStyle(i)"
-    ></div>
-    <app-gridbox-item
-      *ngFor="let widget of config.widgets"
-      [widget]="widget"
-    ></app-gridbox-item>
+    @for (col of gridColumns; track $index) {
+    <div class="gridbox-column" [ngStyle]="getGridColumnStyle($index)"></div>
+    } @for (row of gridRows; track $index) {
+    <div class="gridbox-row" [ngStyle]="getGridRowStyle($index)"></div>
+    } @for (widget of config.widgets; track widget.id) {
+    <app-gridbox-item [widget]="widget"></app-gridbox-item>
+    }
   `,
   styleUrl: './gridbox.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
