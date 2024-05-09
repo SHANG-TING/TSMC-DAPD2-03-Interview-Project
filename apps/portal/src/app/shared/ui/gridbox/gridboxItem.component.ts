@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  HostListener,
   inject,
   Input,
   OnChanges,
@@ -35,6 +36,10 @@ import { HEIGHT_UNIT } from './gridbox.constant';
 export class GridboxItemComponent implements OnInit, OnChanges {
   @Input() index!: number;
   @Input() widget!: Widget;
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.#updateItemStyle();
+  }
 
   gridboxComponent = inject(GridboxComponent);
 

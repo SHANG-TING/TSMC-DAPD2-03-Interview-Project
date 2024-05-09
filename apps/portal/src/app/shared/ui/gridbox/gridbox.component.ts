@@ -6,6 +6,7 @@ import {
   ContentChild,
   ElementRef,
   HostBinding,
+  HostListener,
   inject,
   Input,
   OnChanges,
@@ -43,6 +44,10 @@ export class GridboxComponent implements OnChanges {
   };
 
   @HostBinding('style.height.px') height?: number;
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.#updateGridStyle();
+  }
 
   gridColumns = Array(COLUMN_COUNT);
   gridRows = [];
@@ -57,7 +62,7 @@ export class GridboxComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('config' in changes) {
-      this.updateGridStyle();
+      this.#updateGridStyle();
     }
   }
 
@@ -82,7 +87,7 @@ export class GridboxComponent implements OnChanges {
     };
   }
 
-  private updateGridStyle() {
+  #updateGridStyle() {
     this.gridRows.length = Math.max(
       ...this.config.widgets.map(
         ({ position: { top, height } }) => top + height
