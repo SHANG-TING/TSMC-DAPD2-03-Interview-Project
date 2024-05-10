@@ -28,7 +28,7 @@ import { GridboxItemComponent } from './gridboxItem.component';
     } @for (row of gridRows; track $index) {
     <div class="gridbox-row" [ngStyle]="getGridRowStyle($index)"></div>
     } @for (widget of config.widgets; track widget.id) {
-    <app-gridbox-item [widget]="widget"></app-gridbox-item>
+    <app-gridbox-item [attr.id]="widget.id" [widget]="widget"></app-gridbox-item>
     }
   `,
   styleUrl: './gridbox.component.scss',

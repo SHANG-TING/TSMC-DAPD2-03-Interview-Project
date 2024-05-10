@@ -9,17 +9,8 @@ describe('Test Dashboard', () => {
     spectator = createComponent();
   });
 
-  test('should render text widget', () => {
-    const textWidget = spectator.query('app-text-widget');
-    expect(textWidget).toBeTruthy();
-
-    spectator.detectChanges();
-    expect(textWidget?.textContent).toContain('Text Widget');
-    expect(textWidget?.textContent).toContain('Hello World');
-  });
-
   test('should render grid widget', () => {
-    const gridWidget = spectator.query('app-grid-widget');
+    const gridWidget = spectator.query('#widget-01');
     expect(gridWidget).toBeTruthy();
 
     spectator.detectChanges();
@@ -28,5 +19,48 @@ describe('Test Dashboard', () => {
     expect(gridWidget?.textContent).toContain('Role');
     expect(gridWidget?.textContent).toContain('Mike');
     expect(gridWidget?.textContent).toContain('Engineer');
+  });
+
+  test('should render text widget', () => {
+    const textWidget = spectator.query('#widget-02');
+    expect(textWidget).toBeTruthy();
+
+    spectator.detectChanges();
+    expect(textWidget?.textContent).toContain('Text Widget');
+    expect(textWidget?.textContent).toContain('Hello World');
+  });
+
+  test('should render new grid widget when click add-grid-widget-button', () => {
+    let newGridWidget = spectator.query('#widget-04');
+    expect(newGridWidget).toBeNull();
+
+    spectator
+      .query<HTMLButtonElement>('[data-e2e-id="add-grid-widget-button"]')
+      ?.click();
+    spectator.detectChanges();
+
+    newGridWidget = spectator.query('#widget-03');
+
+    expect(newGridWidget?.textContent).toContain('Grid Widget');
+    expect(newGridWidget?.textContent).toContain('User Name');
+    expect(newGridWidget?.textContent).toContain('Role');
+    expect(newGridWidget?.textContent).toContain('Jeff');
+    expect(newGridWidget?.textContent).toContain('Declan');
+    expect(newGridWidget?.textContent).toContain('Engineer');
+  });
+
+  test('should render new text widget when click add-text-widget-button', () => {
+    let newTextWidget = spectator.query('#widget-06');
+    expect(newTextWidget).toBeNull();
+
+    spectator
+      .query<HTMLButtonElement>('[data-e2e-id="add-text-widget-button"]')
+      ?.click();
+    spectator.detectChanges();
+
+    newTextWidget = spectator.query('#widget-04');
+
+    expect(newTextWidget?.textContent).toContain('Text Widget');
+    expect(newTextWidget?.textContent).toContain('Good night.');
   });
 });

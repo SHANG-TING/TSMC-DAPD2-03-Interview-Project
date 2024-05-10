@@ -14,11 +14,19 @@ import { TextWidgetComponent } from './widgets/text-widget/text-widget.component
   standalone: true,
   template: `
     <h2>dashboard works!</h2>
-    <button (click)="addTextWidget()" style="margin: 10px 0;">
-      Add Text Widget
-    </button>
-    <button (click)="addGridWidget()" style="margin: 10px 0;">
+    <button
+      data-e2e-id="add-grid-widget-button"
+      (click)="addGridWidget()"
+      style="margin: 10px 0;"
+    >
       Add Grid Widget
+    </button>
+    <button
+      data-e2e-id="add-text-widget-button"
+      (click)="addTextWidget()"
+      style="margin: 10px 0;"
+    >
+      Add Text Widget
     </button>
     <app-gridbox [config]="config">
       <ng-template #widget let-data>
@@ -79,35 +87,9 @@ export class DashboardComponent {
     ],
   };
 
-  addTextWidget() {
-    const addedTextWidget: Widget<'text'> = {
-      id: 'widget-03',
-      title: 'Text 2',
-      type: 'text',
-      position: {
-        left: 6,
-        top: 7,
-        width: 3,
-        height: 3,
-      },
-      options: {
-        content: 'Good night.',
-        color: 'yellow',
-        background: '#666',
-      },
-    };
-
-    if (this.config.widgets.some((w) => w.id === addedTextWidget.id)) return;
-
-    this.config = {
-      ...this.config,
-      widgets: [...this.config.widgets, addedTextWidget],
-    };
-  }
-
   addGridWidget() {
     const addedGridWidget: Widget<'grid'> = {
-      id: 'widget-04',
+      id: 'widget-03',
       title: 'Grid 2',
       type: 'grid',
       position: {
@@ -133,6 +115,32 @@ export class DashboardComponent {
     this.config = {
       ...this.config,
       widgets: [...this.config.widgets, addedGridWidget],
+    };
+  }
+
+  addTextWidget() {
+    const addedTextWidget: Widget<'text'> = {
+      id: 'widget-04',
+      title: 'Text 2',
+      type: 'text',
+      position: {
+        left: 6,
+        top: 7,
+        width: 3,
+        height: 3,
+      },
+      options: {
+        content: 'Good night.',
+        color: 'yellow',
+        background: '#666',
+      },
+    };
+
+    if (this.config.widgets.some((w) => w.id === addedTextWidget.id)) return;
+
+    this.config = {
+      ...this.config,
+      widgets: [...this.config.widgets, addedTextWidget],
     };
   }
 }
