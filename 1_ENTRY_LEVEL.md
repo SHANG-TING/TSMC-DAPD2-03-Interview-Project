@@ -11,18 +11,33 @@ npm start
 
 ## 如何驗證功能是否正確
 
+### Unit Testing
+
+```
+npx nx test portal --coverage --coverageReporters="text-summary"
+```
+
+![image](https://github.com/SHANG-TING/TSMC-DAPD2-03-Interview-Project/assets/12579766/33c1de5a-2c64-4769-8a87-ac9458ae3abe)
+
+wallaby.js
+
+![image](https://github.com/SHANG-TING/TSMC-DAPD2-03-Interview-Project/assets/12579766/e87e12a3-86d0-425c-a216-6e6ac49e1509)
+
+### Manual Testing
+
 打開 http://localhost:4200
 
-
+![2024-05-10 16 46 33](https://github.com/SHANG-TING/TSMC-DAPD2-03-Interview-Project/assets/12579766/e06eb0cc-4c3a-4170-9714-796ac45c6491)
 
 ## 簡易的專案架構說明
 
 ```
-- apps/portal/src/app
-- feature/dashboard
-  - widgets
-    - grid-widget.component.ts
-    - text-widget.component.ts
-  dashboard.component.ts
-- shared/ui/gridbox
+├── apps/portal/src/app
+│   ├── feature/dashboard 
+│   │   ├── widgets # 定義對應 widget type 的元件
+│   │   │   ├──  grid-widget.component.ts
+│   │   │   └──  text-widget.component.ts
+│   │   └── dashboard.component.ts #主頁面
+│   └── shared/ui
+│       └── gridbox # 主要生成網格的元件
 ```
