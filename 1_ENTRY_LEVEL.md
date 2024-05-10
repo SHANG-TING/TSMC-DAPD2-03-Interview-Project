@@ -1,4 +1,4 @@
-# 1_ENTRY_LEVEL
+# 1 ENTRY LEVEL
 
 ## 如何啟動執行整個專案
 
@@ -8,6 +8,11 @@
 npm ci
 npm start
 ```
+
+> 因為後續的題目，一樣會在這 repo 持續更新，所以如果只想單純驗證 1 ENTRY LEVEL 的功能有沒有實現的話，麻煩請先切換 `feature/1-entry-level` 分支
+> ```
+> git checkout feature/1-entry-level
+> ```
 
 ## 如何驗證功能是否正確
 
