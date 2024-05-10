@@ -30,6 +30,7 @@
     "@angular/cli": "~17.3.0",
     "@angular/compiler-cli": "~17.3.0",
     "@angular/language-service": "~17.3.0",
+    "@ngneat/spectator": "^18.0.2",
     "@nx/eslint": "19.0.1",
     "@nx/eslint-plugin": "19.0.1",
     "@nx/jest": "19.0.1",
