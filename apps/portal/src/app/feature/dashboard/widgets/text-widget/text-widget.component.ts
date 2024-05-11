@@ -8,7 +8,7 @@ import { Widget } from '../../../../shared/ui/gridbox/gridbox.interface';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="title">Text Widget</div>
+    <div class="title">{{ data.title }}</div>
     <div class="content">
       <span
         [style.color]="data.options.color"

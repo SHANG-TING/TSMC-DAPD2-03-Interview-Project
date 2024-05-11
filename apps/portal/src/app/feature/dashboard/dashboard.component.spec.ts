@@ -14,7 +14,7 @@ describe('Test Dashboard', () => {
     expect(gridWidget).toBeTruthy();
 
     spectator.detectChanges();
-    expect(gridWidget?.textContent).toContain('Grid Widget');
+    expect(gridWidget?.textContent).toContain('Grid 1');
     expect(gridWidget?.textContent).toContain('User Name');
     expect(gridWidget?.textContent).toContain('Role');
     expect(gridWidget?.textContent).toContain('Mike');
@@ -26,7 +26,7 @@ describe('Test Dashboard', () => {
     expect(textWidget).toBeTruthy();
 
     spectator.detectChanges();
-    expect(textWidget?.textContent).toContain('Text Widget');
+    expect(textWidget?.textContent).toContain('Text 1');
     expect(textWidget?.textContent).toContain('Hello World');
   });
 
@@ -41,7 +41,7 @@ describe('Test Dashboard', () => {
 
     newGridWidget = spectator.query('#widget-03');
 
-    expect(newGridWidget?.textContent).toContain('Grid Widget');
+    expect(newGridWidget?.textContent).toContain('Grid 2');
     expect(newGridWidget?.textContent).toContain('User Name');
     expect(newGridWidget?.textContent).toContain('Role');
     expect(newGridWidget?.textContent).toContain('Jeff');
@@ -60,7 +60,7 @@ describe('Test Dashboard', () => {
 
     newTextWidget = spectator.query('#widget-04');
 
-    expect(newTextWidget?.textContent).toContain('Text Widget');
+    expect(newTextWidget?.textContent).toContain('Text 2');
     expect(newTextWidget?.textContent).toContain('Good night.');
   });
 });
