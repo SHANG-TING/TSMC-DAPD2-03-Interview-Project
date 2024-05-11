@@ -39,24 +39,20 @@ export class GridboxItemComponent implements OnInit, OnChanges {
   @HostBinding('style.transform') transform!: string;
   @HostBinding('style.width.px') width!: number;
   @HostBinding('style.height.px') height!: number;
-  @HostListener('window:resize', ['$event'])
-  onResize() {
-    this.#updateItemStyle();
-  }
 
   gridboxComponent = inject(GridboxComponent);
 
   ngOnInit(): void {
-    this.#updateItemStyle();
+    this.updateItemStyle();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('widget' in changes) {
-      this.#updateItemStyle();
+      this.updateItemStyle();
     }
   }
 
-  #updateItemStyle() {
+  updateItemStyle() {
     const colWidthUnit = this.gridboxComponent.columnWidthUnit;
     const { top, left, height, width } = this.widget.position;
 
