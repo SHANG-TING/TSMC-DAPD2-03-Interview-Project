@@ -196,6 +196,7 @@ export class DashboardComponent {
       {
         minWidth: '300px',
         data: gridFilterChange$.value,
+        disableClose: true,
       }
     );
     dialogRef.closed.subscribe((data) => {

@@ -17,6 +17,7 @@ type DialogData = PartialNullable<Pick<GridWidgetData, 'name'>>;
       <input type="text" formControlName="name" />
       <button class="button" (click)="onSubmit()">Filter</button>
     </form>
+    <button type="button" class="close-button" (click)="onClose()">X</button>
   `,
   styleUrl: './grid-filter-dialog.component.scss',
   standalone: true,
@@ -38,5 +39,9 @@ export class AppGridFilterDialogComponent implements OnInit {
   onSubmit() {
     if (this.form.invalid) return;
     this.#dialogRef.close(this.form.value);
+  }
+
+  onClose() {
+    this.#dialogRef.close();
   }
 }
