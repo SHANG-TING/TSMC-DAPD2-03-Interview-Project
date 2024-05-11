@@ -32,7 +32,7 @@ wallaby.js
 
 打開 http://localhost:4200
 
-![2024-05-10 16 46 33](https://github.com/SHANG-TING/TSMC-DAPD2-03-Interview-Project/assets/12579766/e06eb0cc-4c3a-4170-9714-796ac45c6491)
+![2024-05-11 16 59 18](https://github.com/SHANG-TING/TSMC-DAPD2-03-Interview-Project/assets/12579766/3e078fb3-5721-4b63-9a79-ed780f8b8075)
 
 ## 簡易的專案架構說明
 
