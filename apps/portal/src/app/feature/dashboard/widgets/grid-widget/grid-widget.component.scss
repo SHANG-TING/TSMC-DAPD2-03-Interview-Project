@@ -2,6 +2,7 @@ table {
   width: 100%;
   border: 1px solid black;
   box-sizing: border-box;
+  table-layout: fixed;
 }
 
 th,
@@ -18,6 +19,7 @@ th {
 tbody td {
   background-color: #C8C8C8;
 }
+
 tbody tr:nth-child(even) td {
   background-color: #E6E6E6;
 }

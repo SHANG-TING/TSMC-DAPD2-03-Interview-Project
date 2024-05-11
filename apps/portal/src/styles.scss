@@ -1,6 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+@import '@angular/cdk/overlay-prebuilt.css';
+
 html,
 body {
   margin: 0;
   height: 100vh;
+}
+
+.button {
+  background-color: #FFFE96;
+  font-weight: bold;
+  font-size: 1.5rem;
 }

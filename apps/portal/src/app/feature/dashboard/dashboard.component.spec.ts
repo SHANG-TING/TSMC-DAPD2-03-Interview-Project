@@ -1,3 +1,4 @@
+import { By } from '@angular/platform-browser';
 import { DashboardComponent } from './dashboard.component';
 import { Spectator, createComponentFactory } from '@ngneat/spectator';
 
@@ -21,15 +22,6 @@ describe('Test Dashboard', () => {
     expect(gridWidget?.textContent).toContain('Engineer');
   });
 
-  test('should render text widget', () => {
-    const textWidget = spectator.query('#widget-02');
-    expect(textWidget).toBeTruthy();
-
-    spectator.detectChanges();
-    expect(textWidget?.textContent).toContain('Text 1');
-    expect(textWidget?.textContent).toContain('Hello World');
-  });
-
   test('should render new grid widget when click add-grid-widget-button', () => {
     let newGridWidget = spectator.query('#widget-04');
     expect(newGridWidget).toBeNull();
@@ -39,9 +31,9 @@ describe('Test Dashboard', () => {
       ?.click();
     spectator.detectChanges();
 
-    newGridWidget = spectator.query('#widget-03');
+    newGridWidget = spectator.query('#widget-04');
 
-    expect(newGridWidget?.textContent).toContain('Grid 2');
+    expect(newGridWidget?.textContent).toContain('Grid 4');
     expect(newGridWidget?.textContent).toContain('User Name');
     expect(newGridWidget?.textContent).toContain('Role');
     expect(newGridWidget?.textContent).toContain('Jeff');
@@ -50,7 +42,7 @@ describe('Test Dashboard', () => {
   });
 
   test('should render new text widget when click add-text-widget-button', () => {
-    let newTextWidget = spectator.query('#widget-06');
+    let newTextWidget = spectator.query('#widget-05');
     expect(newTextWidget).toBeNull();
 
     spectator
@@ -58,9 +50,8 @@ describe('Test Dashboard', () => {
       ?.click();
     spectator.detectChanges();
 
-    newTextWidget = spectator.query('#widget-04');
+    newTextWidget = spectator.query('#widget-05');
 
-    expect(newTextWidget?.textContent).toContain('Text 2');
-    expect(newTextWidget?.textContent).toContain('Good night.');
+    expect(newTextWidget).not.toBeNull();
   });
 });

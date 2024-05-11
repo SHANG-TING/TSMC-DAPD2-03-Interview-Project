@@ -1,11 +1,15 @@
+import { Dialog, DialogModule } from '@angular/cdk/dialog';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { GridboxComponent } from '../../shared/ui/gridbox/gridbox.component';
 import {
   GridboxConfig,
+  GridWidgetData,
   Widget,
 } from '../../shared/ui/gridbox/gridbox.interface';
+import { DashboardService } from './dashboard.service';
+import { AppGridFilterDialogComponent } from './dialog/grid-filter-dialog.component';
 import { GridWidgetComponent } from './widgets/grid-widget/grid-widget.component';
 import { TextWidgetComponent } from './widgets/text-widget/text-widget.component';
 
@@ -28,6 +32,13 @@ import { TextWidgetComponent } from './widgets/text-widget/text-widget.component
     >
       Add Text Widget
     </button>
+    <button
+      class="button"
+      style="float: right"
+      (click)="openGridFilterDialog()"
+    >
+      Filter By Name
+    </button>
     <app-gridbox [config]="config">
       <ng-template #widget let-data>
         @defer (when data.type === 'text') {
@@ -45,7 +56,9 @@ import { TextWidgetComponent } from './widgets/text-widget/text-widget.component
     GridboxComponent,
     TextWidgetComponent,
     GridWidgetComponent,
+    DialogModule,
   ],
+  providers: [DashboardService],
 })
 export class DashboardComponent {
   config: GridboxConfig = {
@@ -57,45 +70,77 @@ export class DashboardComponent {
         position: {
           left: 0,
           top: 0,
-          width: 6,
-          height: 3,
+          width: 12,
+          height: 4,
         },
         options: {
           headers: [
             { fieldId: 'name', displayText: 'User Name' },
             { fieldId: 'role', displayText: 'User Role' },
           ],
-          data: [{ name: 'Mike', role: 'Engineer' }],
+          data: [
+            { name: 'Mike', role: 'Engineer' },
+            { name: 'Jeff', role: 'Engineer' },
+          ],
         },
       },
       {
         id: 'widget-02',
-        title: 'Text 1',
-        type: 'text',
+        title: 'Grid 2',
+        type: 'grid',
         position: {
           left: 0,
-          top: 3,
-          width: 3,
-          height: 3,
+          top: 5,
+          width: 5,
+          height: 4,
         },
         options: {
-          content: 'Hello World',
-          color: 'white',
-          background: '#f00',
+          headers: [
+            { fieldId: 'name', displayText: 'User' },
+            { fieldId: 'age', displayText: 'Age' },
+          ],
+          data: [
+            { name: 'Mike', age: '38' },
+            { name: 'Hao', age: '18' },
+          ],
+        },
+      },
+      {
+        id: 'widget-03',
+        title: 'Grid 3',
+        type: 'grid',
+        position: {
+          left: 7,
+          top: 5,
+          width: 5,
+          height: 4,
+        },
+        options: {
+          headers: [
+            { fieldId: 'step', displayText: 'Step' },
+            { fieldId: 'result', displayText: 'Result' },
+          ],
+          data: [
+            { step: 'Create', result: 'Pass' },
+            { step: 'Validate', result: 'Fail' },
+          ],
         },
       },
     ],
   };
 
+  #dialog = inject(Dialog);
+  #dataService = inject(DashboardService);
+
   addGridWidget() {
     const addedGridWidget: Widget<'grid'> = {
-      id: 'widget-03',
-      title: 'Grid 2',
+      id: 'widget-04',
+      title: 'Grid 4',
       type: 'grid',
       position: {
         left: 6,
-        top: 3,
-        width: 6,
+        top: 10,
+        width: 3,
         height: 4,
       },
       options: {
@@ -120,12 +165,12 @@ export class DashboardComponent {
 
   addTextWidget() {
     const addedTextWidget: Widget<'text'> = {
-      id: 'widget-04',
-      title: 'Text 2',
+      id: 'widget-05',
+      title: 'Text 1',
       type: 'text',
       position: {
-        left: 6,
-        top: 7,
+        left: 0,
+        top: 10,
         width: 3,
         height: 3,
       },
@@ -142,5 +187,23 @@ export class DashboardComponent {
       ...this.config,
       widgets: [...this.config.widgets, addedTextWidget],
     };
+  }
+
+  openGridFilterDialog() {
+    const { gridFilterChange$ } = this.#dataService;
+    const dialogRef = this.#dialog.open<Partial<GridWidgetData>>(
+      AppGridFilterDialogComponent,
+      {
+        minWidth: '300px',
+        data: gridFilterChange$.value,
+      }
+    );
+    dialogRef.closed.subscribe((data) => {
+      if (!data) return;
+      gridFilterChange$.next({
+        ...gridFilterChange$.value,
+        ...data,
+      });
+    });
   }
 }

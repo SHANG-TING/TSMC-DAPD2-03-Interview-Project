@@ -1,0 +1,24 @@
+:host {
+  display: block;
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 16px;
+}
+
+h2 {
+  margin: 0.5rem 0;
+}
+
+form {
+  display: flex;
+  gap: 1rem;
+}
+
+input {
+  flex-grow: 1;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  border-bottom: 2px solid #000;
+  outline-width: 0;
+}

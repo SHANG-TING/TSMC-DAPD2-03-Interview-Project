@@ -12,7 +12,7 @@ export interface Widget<
   options: WidgetOptionsCollection[Type];
 }
 
-type WidgetOptionsCollection = {
+export interface WidgetOptionsCollection {
   grid: {
     headers?: GridWidgetHeader[];
     data?: GridWidgetData[];
@@ -22,19 +22,22 @@ type WidgetOptionsCollection = {
     color?: string;
     background?: string;
   };
-};
-
-interface GridWidgetData {
-  name: string;
-  role: string;
 }
 
-interface GridWidgetHeader {
+export interface GridWidgetData {
+  name?: string;
+  role?: string;
+  age?: string;
+  step?: string;
+  result?: string;
+}
+
+export interface GridWidgetHeader {
   fieldId: keyof GridWidgetData;
   displayText: string;
 }
 
-interface WidgetPosition {
+export interface WidgetPosition {
   left: number;
   top: number;
   width: number;
