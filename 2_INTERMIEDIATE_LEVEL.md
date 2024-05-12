@@ -1,5 +1,11 @@
 # 2 Intermediate Level
 
+> 因為後續的題目，一樣會在這 repo 持續更新，所以如果只想單純驗證 2 Intermediate Level
+ 的功能有沒有實現的話，麻煩請先切換 feature/2-intermidiate-level 分支
+> ```
+> git checkout feature/2-intermidiate-level
+> ```
+
 ## 新功能的設計方式
 
 ### 1. 建立 DashboardService 且定義 gridFilterData$
