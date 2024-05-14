@@ -199,12 +199,16 @@ export class GridWidgetComponent {
 
 ## 是否有想過其他解決方式?如果有請說明不同方式及優缺點
 
-1. 不需建立額外的 DashboardService，其實 GridFilterDialog 可以直接取得 DashboardComponent 的 Property
+### 1. 不需建立額外的 DashboardService，其實 GridFilterDialog 也可以透過 DI 直接取得 DashboardComponent 的 Property
 
-- ✅ 如果資料很少的話，少一個 service 也許相對簡潔？
-- ❌ 我認為資料面的物件，可以統一到 Service 裡面，另外考慮之後要整合 Custom Element 的話，我會把 DashboardService 塞到每個 Custom Element 的 Property。
+✅ 如果資料很少的話，少一個 service 也許相對簡潔？
 
-2. 不需要特別定義 gridFilterData$ (Observable)，用一般的 Object 即可，可以透過 @input() 傳給 GridWidget（他可以透過 @Input() 的 setter 或者 ngOnChange 來偵測資料異動)
+❌ 我認為資料面的物件，可以統一到 Service 裡面，另外考慮之後要整合 Custom Element 的話，我會把 DashboardService 塞到每個 Custom Element 的 Property。
 
-- ✅ 可能對於不太常寫 RxJS 的夥伴是優點? 也不用特別寫 async pipe 之類的？
-- ❌ 我不喜歡！我認為使用 Observable 可以很直觀的控制資料流，相對可維護性高、可擴充性也高，我還是比較喜歡用 RxJS (做資料連動）
+### 2 不需要特別定義 gridFilterData$ (Observable)，用一般的 Object 即可，可以透過 @input() 傳給 GridWidget（他可以透過 @Input() 的 setter 或者 ngOnChange 來偵測資料異動)
+
+✅ 如果團隊比較少人在寫 RxJS，而幾乎都是 Signals 教徒的話? 可能就按照團隊的風格為主吧 XD
+
+❌ 我喜歡 RxJS！我認為使用 Observable 可以很直觀的控制資料流，相對可維護性高、可擴充性也高 (也能使用 Async Pipe 來 Binding Template)
+
+> 但如果同時有多處使用 Async Pipe 來 Binding Template 時，可能要配置 `shareReply` 之類 rxjs operators，將其轉換成 Hot Observable 來避免一些重複打 API 或運算的部分。
