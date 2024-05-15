@@ -16,8 +16,10 @@ import {
   ViewChildren,
 } from '@angular/core';
 
+import { Widget } from '@portal/data-access/models';
+
 import { COLUMN_COUNT, HEIGHT_UNIT } from './gridbox.constant';
-import { GridboxConfig, Widget } from './gridbox.interface';
+import { GridboxConfig } from './gridbox.interface';
 import { GridboxItemComponent } from './gridboxItem.component';
 
 @Component({

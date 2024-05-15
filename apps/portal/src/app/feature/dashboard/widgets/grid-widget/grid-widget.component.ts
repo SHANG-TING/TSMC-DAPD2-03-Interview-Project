@@ -8,11 +8,8 @@ import {
 
 import { map } from 'rxjs/operators';
 
-import {
-  GridWidgetData,
-  Widget,
-} from '../../../../shared/ui/gridbox/gridbox.interface';
 import { DashboardService } from '../../dashboard.service';
+import { GridWidgetData, Widget } from '@portal/data-access/models';
 
 @Component({
   selector: 'app-grid-widget',
@@ -30,15 +27,14 @@ import { DashboardService } from '../../dashboard.service';
           </tr>
         </thead>
         <tbody>
-          @if (dataItems$ | async; as dataItems) {
-            @for(item of dataItems; track $index) {
-            <tr>
-              @for (header of data.options.headers; track header.fieldId) {
-              <td>{{ item?.[header.fieldId] }}</td>
-              }
-            </tr>
+          @if (dataItems$ | async; as dataItems) { @for(item of dataItems; track
+          $index) {
+          <tr>
+            @for (header of data.options.headers; track header.fieldId) {
+            <td>{{ item?.[header.fieldId] }}</td>
             }
-          }
+          </tr>
+          } }
         </tbody>
       </table>
     </div>

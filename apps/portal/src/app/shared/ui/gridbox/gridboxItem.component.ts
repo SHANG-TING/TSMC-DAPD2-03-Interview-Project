@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   HostBinding,
-  HostListener,
   inject,
   Input,
   OnChanges,
@@ -11,9 +10,10 @@ import {
   SimpleChanges,
 } from '@angular/core';
 
+import { Widget } from '@portal/data-access/models';
+
 import { GridboxComponent } from './gridbox.component';
 import { HEIGHT_UNIT } from './gridbox.constant';
-import { Widget } from './gridbox.interface';
 
 @Component({
   selector: 'app-gridbox-item',

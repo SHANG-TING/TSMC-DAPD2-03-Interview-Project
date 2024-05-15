@@ -2,14 +2,13 @@ import { Dialog, DialogModule } from '@angular/cdk/dialog';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
+import { GridWidgetData, Widget } from '@portal/data-access/models';
+
 import { GridboxComponent } from '../../shared/ui/gridbox/gridbox.component';
-import {
-  GridboxConfig,
-  GridWidgetData,
-  Widget,
-} from '../../shared/ui/gridbox/gridbox.interface';
+import { GridboxConfig } from '../../shared/ui/gridbox/gridbox.interface';
 import { DashboardService } from './dashboard.service';
 import { AppGridFilterDialogComponent } from './dialog/grid-filter-dialog.component';
+import { ThirdWidgetLoaderComponent } from './ui/third-widget-loader/third-widget-loader.component';
 import { GridWidgetComponent } from './widgets/grid-widget/grid-widget.component';
 import { TextWidgetComponent } from './widgets/text-widget/text-widget.component';
 
@@ -45,6 +44,11 @@ import { TextWidgetComponent } from './widgets/text-widget/text-widget.component
         <app-text-widget [data]="data"></app-text-widget>
         } @defer (when data.type === 'grid') {
         <app-grid-widget [data]="data"></app-grid-widget>
+        } @if (data.type === 'super-grid') {
+        <app-third-widget-loader
+          tagName="super-grid-widget"
+          [props]="{ data }"
+        ></app-third-widget-loader>
         }
       </ng-template>
     </app-gridbox>
@@ -56,6 +60,7 @@ import { TextWidgetComponent } from './widgets/text-widget/text-widget.component
     GridboxComponent,
     TextWidgetComponent,
     GridWidgetComponent,
+    ThirdWidgetLoaderComponent,
     DialogModule,
   ],
   providers: [DashboardService],
@@ -66,7 +71,7 @@ export class DashboardComponent {
       {
         id: 'widget-01',
         title: 'Grid 1',
-        type: 'grid',
+        type: 'super-grid',
         position: {
           left: 0,
           top: 0,

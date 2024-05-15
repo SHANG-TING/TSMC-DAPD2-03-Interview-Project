@@ -2,7 +2,7 @@ import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 
-import { GridWidgetData } from '../../../shared/ui/gridbox/gridbox.interface';
+import { GridWidgetData } from '@portal/data-access/models';
 
 type PartialNullable<T> = {
   [P in keyof T]?: T[P] | null;

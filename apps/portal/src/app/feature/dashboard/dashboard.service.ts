@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs';
 
-import { GridWidgetData } from '../../shared/ui/gridbox/gridbox.interface';
+import { GridWidgetData } from '@portal/data-access/models';
 
 @Injectable()
 export class DashboardService {

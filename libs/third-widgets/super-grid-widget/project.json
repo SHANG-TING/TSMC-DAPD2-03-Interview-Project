@@ -1,0 +1,9 @@
+{
+  "name": "super-grid-widget",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/third-widgets/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project super-grid-widget --web",
+  "targets": {}
+}

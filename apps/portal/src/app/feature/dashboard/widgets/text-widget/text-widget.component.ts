@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { Widget } from '../../../../shared/ui/gridbox/gridbox.interface';
+import { Widget } from '@portal/data-access/models';
 
 @Component({
   selector: 'app-text-widget',
