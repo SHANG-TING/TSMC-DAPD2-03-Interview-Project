@@ -1,0 +1,1 @@
+import{Y as i,n as e}from"./chunk-PZWVIMGS.js";var f=(()=>{let t=class t{constructor(){this.gridFilterChange$=new e({name:""})}};t.\u0275fac=function(o){return new(o||t)},t.\u0275prov=i({token:t,factory:t.\u0275fac});let r=t;return r})();export{f as a};
