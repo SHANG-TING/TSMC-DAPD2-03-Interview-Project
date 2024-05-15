@@ -7,3 +7,7 @@ https://github.com/SHANG-TING/TSMC-DAPD2-03-Interview-Project/blob/main/1_ENTRY_
 ## 2 Intermiediate Level
 
 https://github.com/SHANG-TING/TSMC-DAPD2-03-Interview-Project/blob/main/2_INTERMIEDIATE_LEVEL.md
+
+## 3 Advanced Level
+
+https://github.com/SHANG-TING/TSMC-DAPD2-03-Interview-Project/blob/main/3_ADVANCED_LEVEL.md
