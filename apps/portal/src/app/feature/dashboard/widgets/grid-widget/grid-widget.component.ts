@@ -66,8 +66,9 @@ export class GridWidgetComponent {
       return dataItems.filter((item) => {
         return Object.entries(filterData).every(([key, value]) =>
           item[key as keyof GridWidgetData]
-            ?.toLowerCase()
-            .includes(value?.toLowerCase())
+            ?.toString()
+            .toLowerCase()
+            .includes(value?.toString()?.toLowerCase())
         );
       });
     })

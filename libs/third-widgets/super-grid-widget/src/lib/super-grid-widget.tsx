@@ -1,12 +1,23 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
+import cx from 'classnames';
+import { orderBy } from 'lodash-es';
 import ReactDOM from 'react-dom/client';
 import r2wc from 'react-to-webcomponent';
 import styled, { StyleSheetManager } from 'styled-components';
 
 import { GridWidgetData, Widget } from '@portal/data-access/models';
 
-export interface SuperGridWidgetProps {
+import { useCustomEvent } from './hooks/useCustomEvent';
+
+type OrderData = {
+  [key in keyof GridWidgetData]?: 'asc' | 'desc';
+};
+
+export interface R2WCBaseProps {
+  container?: ShadowRoot;
+}
+export interface SuperGridWidgetProps extends R2WCBaseProps {
   data: Widget<'super-grid'>;
 }
 
@@ -46,47 +57,71 @@ const StyledSuperGridWidget = styled.div`
   }
 
   th {
-    background-color: black;
+    background-color: #3232c8;
     color: white;
+
+    .sort-by {
+      padding-right: 24px;
+      position: relative;
+    }
+    .sort-by:before,
+    .sort-by:after {
+      border: 6px solid transparent;
+      content: '';
+      display: block;
+      height: 0;
+      right: 5px;
+      top: 50%;
+      position: absolute;
+      width: 0;
+    }
+    .sort-by:before {
+      border-bottom-color: #fff;
+      margin-top: -12px;
+    }
+    .sort-by--asc:before {
+      border-bottom-color: #c8c8c8;
+    }
+    .sort-by:after {
+      border-top-color: #fff;
+      margin-top: 3px;
+    }
+    .sort-by--desc:after {
+      border-top-color: #c8c8c8;
+    }
   }
 
   tbody td {
-    background-color: #c8c8c8;
+    background-color: #cdcdeb;
   }
 
   tbody tr:nth-child(even) td {
-    background-color: #e6e6e6;
+    background-color: #e6e6f5;
   }
 `;
 
-export function SuperGridWidget({ data }: SuperGridWidgetProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [filterData, setFilterData] = useState<Partial<GridWidgetData>>({});
+export function SuperGridWidget({ data, container }: SuperGridWidgetProps) {
+  const filterData = useCustomEvent(container, 'gridFilterData');
+  const [sortOrderData, setSortOrderData] = useState<OrderData>({});
 
   useEffect(() => {
-    if (!ref.current) {
-      return;
-    }
+    if (!data.options.sortableColumns?.length) return;
+    setSortOrderData(
+      data.options.sortableColumns.reduce(
+        (acc, column) => ({
+          ...acc,
+          [column]: 'asc',
+        }),
+        {}
+      )
+    );
+  }, [data.options.sortableColumns]);
 
-    const customElement = ref.current.parentElement;
-
-    function handleGridFilterChange(event: Event) {
-      setFilterData((event as CustomEvent).detail);
-    }
-
-    customElement?.addEventListener('gridFilterChange', handleGridFilterChange);
-    return () => {
-      customElement?.removeEventListener(
-        'gridFilterChange',
-        handleGridFilterChange
-      );
-    };
-  }, []);
-
-  const dataItems = useMemo(() => {
+  const filetedDataItems = useMemo(() => {
     const dataItems = data.options.data ?? [];
 
     if (
+      !filterData ||
       data.options.headers?.every(
         (header: { fieldId: string }) => !(header.fieldId in filterData)
       )
@@ -97,27 +132,62 @@ export function SuperGridWidget({ data }: SuperGridWidgetProps) {
     return dataItems.filter((item) => {
       return Object.entries(filterData).every(([key, value]) =>
         item[key as keyof GridWidgetData]
+          ?.toString()
           ?.toLowerCase()
-          .includes(value?.toLowerCase())
+          .includes(value?.toString()?.toLowerCase())
       );
     });
   }, [data.options.data, data.options.headers, filterData]);
 
+  const sortedDataItems = useMemo(
+    () =>
+      orderBy(
+        filetedDataItems,
+        Object.keys(sortOrderData),
+        Object.values(sortOrderData)
+      ),
+    [filetedDataItems, sortOrderData]
+  );
+
+  const handleSortChange = (fieldId: keyof GridWidgetData) => {
+    setSortOrderData((prev) => ({
+      ...prev,
+      [fieldId]: prev[fieldId] === 'asc' ? 'desc' : 'asc',
+    }));
+  };
+
   return (
-    <StyleSheetManager>
-      <StyledSuperGridWidget ref={ref}>
+    <StyleSheetManager target={container}>
+      <StyledSuperGridWidget>
         <div className="title">{data.title}</div>
         <div className="content">
           <table>
             <thead>
               <tr>
                 {data.options.headers?.map((header) => (
-                  <th key={header.fieldId}>{header.displayText}</th>
+                  <th key={header.fieldId}>
+                    {header.fieldId in sortOrderData ? (
+                      <div onClick={() => handleSortChange(header.fieldId)}>
+                        <span
+                          className={cx('sort-by', {
+                            'sort-by--asc':
+                              sortOrderData[header.fieldId] === 'asc',
+                            'sort-by--desc':
+                              sortOrderData[header.fieldId] === 'desc',
+                          })}
+                        >
+                          {header.displayText}
+                        </span>
+                      </div>
+                    ) : (
+                      header.displayText
+                    )}
+                  </th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {dataItems.map((item, i) => (
+              {sortedDataItems.map((item, i) => (
                 <tr key={i}>
                   {data.options.headers?.map((header) => (
                     <td key={header.fieldId}>{item[header.fieldId]}</td>
@@ -143,6 +213,7 @@ export function definedCustomElement() {
     props: {
       data: 'json',
     },
+    shadow: 'open',
   });
   customElements.define(tagName, superGridWidget);
 }

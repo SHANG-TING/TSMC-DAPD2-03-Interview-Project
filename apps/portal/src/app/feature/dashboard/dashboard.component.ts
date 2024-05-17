@@ -69,8 +69,8 @@ export class DashboardComponent {
   config: GridboxConfig = {
     widgets: [
       {
-        id: 'widget-01',
-        title: 'Grid 1',
+        id: 'custom-widget-01',
+        title: 'Super Grid 1',
         type: 'super-grid',
         position: {
           left: 0,
@@ -80,15 +80,37 @@ export class DashboardComponent {
         },
         options: {
           headers: [
-            { fieldId: 'name', displayText: 'User Name' },
-            { fieldId: 'role', displayText: 'User Role' },
+            { fieldId: 'name', displayText: 'Name' },
+            { fieldId: 'age', displayText: 'Age' },
           ],
           data: [
-            { name: 'Mike', role: 'Engineer' },
-            { name: 'Jeff', role: 'Engineer' },
+            { name: 'Mike', age: 38 },
+            { name: 'Hao', age: 18 },
           ],
+          sortableColumns: ['age'],
         },
       },
+      // {
+      //   id: 'widget-01',
+      //   title: 'Grid 1',
+      //   type: 'grid',
+      //   position: {
+      //     left: 0,
+      //     top: 0,
+      //     width: 12,
+      //     height: 4,
+      //   },
+      //   options: {
+      //     headers: [
+      //       { fieldId: 'name', displayText: 'User Name' },
+      //       { fieldId: 'role', displayText: 'User Role' },
+      //     ],
+      //     data: [
+      //       { name: 'Mike', role: 'Engineer' },
+      //       { name: 'Jeff', role: 'Engineer' },
+      //     ],
+      //   },
+      // },
       {
         id: 'widget-02',
         title: 'Grid 2',
@@ -105,8 +127,8 @@ export class DashboardComponent {
             { fieldId: 'age', displayText: 'Age' },
           ],
           data: [
-            { name: 'Mike', age: '38' },
-            { name: 'Hao', age: '18' },
+            { name: 'Mike', age: 38 },
+            { name: 'Hao', age: 18 },
           ],
         },
       },

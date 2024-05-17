@@ -16,6 +16,7 @@ export interface WidgetOptionsCollection {
   ['super-grid']: {
     headers?: GridWidgetHeader[];
     data?: GridWidgetData[];
+    sortableColumns?: Array<keyof GridWidgetData>;
   };
   text: {
     content?: string;
@@ -27,7 +28,7 @@ export interface WidgetOptionsCollection {
 export interface GridWidgetData {
   name?: string;
   role?: string;
-  age?: string;
+  age?: number;
   step?: string;
   result?: string;
 }
