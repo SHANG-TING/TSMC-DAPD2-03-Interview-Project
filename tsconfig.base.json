@@ -17,7 +17,10 @@
     "jsx": "react-jsx",
     "paths": {
       "@portal/data-access/models": ["libs/data-access/models/src/index.ts"],
-      "@portal/third-widgets/super-grid-widget": ["libs/third-widgets/super-grid-widget/src/index.ts"]
+      "@portal/shared/interfaces": ["libs/shared/interfaces/src/index.ts"],
+      "@portal/third-widgets/super-grid-widget": [
+        "libs/third-widgets/super-grid-widget/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

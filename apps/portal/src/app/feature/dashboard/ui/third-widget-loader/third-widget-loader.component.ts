@@ -62,6 +62,11 @@ export class ThirdWidgetLoaderComponent implements AfterViewInit, OnDestroy {
         }
       }
 
+      this.#renderer.setProperty(
+        elm,
+        'dashboardService',
+        this.#dashboardService
+      );
       this.#renderer.appendChild(this.#elmRef.nativeElement, elm);
 
       this.#dashboardService.gridFilterChange$

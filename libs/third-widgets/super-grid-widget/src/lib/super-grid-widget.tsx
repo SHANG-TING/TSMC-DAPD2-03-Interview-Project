@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 
 import cx from 'classnames';
 import { orderBy } from 'lodash-es';
@@ -8,11 +8,8 @@ import styled, { StyleSheetManager } from 'styled-components';
 
 import { GridWidgetData, Widget } from '@portal/data-access/models';
 
-import { useCustomEvent } from './hooks/useCustomEvent';
-
-type OrderData = {
-  [key in keyof GridWidgetData]?: 'asc' | 'desc';
-};
+import { useDashboardService } from './hooks/useDashboardService';
+import { useGridSettings } from './hooks/useGridSettings';
 
 export interface R2WCBaseProps {
   container?: ShadowRoot;
@@ -101,12 +98,14 @@ const StyledSuperGridWidget = styled.div`
 `;
 
 export function SuperGridWidget({ data, container }: SuperGridWidgetProps) {
-  const filterData = useCustomEvent(container, 'gridFilterData');
-  const [sortOrderData, setSortOrderData] = useState<OrderData>({});
+  const dashboardService = useDashboardService(container!);
+  const { filterData, sortOrderData } = useGridSettings(dashboardService);
 
   useEffect(() => {
-    if (!data.options.sortableColumns?.length) return;
-    setSortOrderData(
+    if (!data.options.sortableColumns?.length) {
+      return;
+    }
+    dashboardService.gridSortChange$.next(
       data.options.sortableColumns.reduce(
         (acc, column) => ({
           ...acc,
@@ -115,7 +114,7 @@ export function SuperGridWidget({ data, container }: SuperGridWidgetProps) {
         {}
       )
     );
-  }, [data.options.sortableColumns]);
+  }, [data.options.sortableColumns, dashboardService.gridSortChange$]);
 
   const filetedDataItems = useMemo(() => {
     const dataItems = data.options.data ?? [];
@@ -149,12 +148,17 @@ export function SuperGridWidget({ data, container }: SuperGridWidgetProps) {
     [filetedDataItems, sortOrderData]
   );
 
-  const handleSortChange = (fieldId: keyof GridWidgetData) => {
-    setSortOrderData((prev) => ({
-      ...prev,
-      [fieldId]: prev[fieldId] === 'asc' ? 'desc' : 'asc',
-    }));
-  };
+  const handleSortChange = useCallback(
+    (fieldId: keyof GridWidgetData) => {
+      if (!dashboardService.gridSortChange$) return;
+
+      dashboardService.gridSortChange$.next({
+        ...sortOrderData,
+        [fieldId]: sortOrderData[fieldId] === 'asc' ? 'desc' : 'asc',
+      });
+    },
+    [dashboardService.gridSortChange$, sortOrderData]
+  );
 
   return (
     <StyleSheetManager target={container}>
