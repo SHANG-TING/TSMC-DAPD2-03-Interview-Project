@@ -1,2 +1,2 @@
-export * from './lib/super-grid-widget';
+export * from './lib/SuperGridWidget';
 
