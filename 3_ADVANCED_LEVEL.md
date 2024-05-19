@@ -110,7 +110,6 @@ esbuild.build({
 
 - 因為變成多個 App 要打包，會需要 NX 指令 `nx run-many --target build --parallel` 加速打包
 - 我想開發體驗來說，肯定沒有使用 dynamic import 來得好，除非現在 `nx build target --watch` 的速度真的很快的話，那也許還可以 XD
-- Web Component API/生命週期並不簡單
 
 ### 解決方式 3
 
