@@ -54,6 +54,13 @@
       "library": {
         "unitTestRunner": "none"
       }
+    },
+    "@nx/angular:library": {
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nx/angular:component": {
+      "style": "css"
     }
   },
   "plugins": [

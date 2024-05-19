@@ -17,6 +17,7 @@
     "jsx": "react-jsx",
     "paths": {
       "@portal/data-access/models": ["libs/data-access/models/src/index.ts"],
+      "@portal/feature/dashboard": ["libs/feature/dashboard/src/index.ts"],
       "@portal/shared/interfaces": ["libs/shared/interfaces/src/index.ts"],
       "@portal/shared/ui/gridbox": ["libs/shared/ui/gridbox/src/index.ts"],
       "@portal/third-widgets/super-grid-widget": [
