@@ -4,8 +4,8 @@ export const appRoutes: Route[] = [
   {
     path: '',
     pathMatch: 'full',
-    loadChildren: () =>
-      import('@portal/feature/dashboard').then((m) => m.dashboardRoutes),
+    loadComponent: () =>
+      import('@portal/feature/dashboard').then((m) => m.DashboardComponent),
   },
   { path: '**', redirectTo: '' },
 ];
