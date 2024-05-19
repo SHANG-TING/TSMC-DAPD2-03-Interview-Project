@@ -3,9 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { GridWidgetData, Widget } from '@portal/data-access/models';
+import { GridboxComponent, GridboxConfig } from '@portal/shared/ui/gridbox';
 
-import { GridboxComponent } from '../../shared/ui/gridbox/gridbox.component';
-import { GridboxConfig } from '../../shared/ui/gridbox/gridbox.interface';
 import { DashboardService } from './dashboard.service';
 import { AppGridFilterDialogComponent } from './dialog/grid-filter-dialog.component';
 import { ThirdWidgetLoaderComponent } from './ui/third-widget-loader/third-widget-loader.component';

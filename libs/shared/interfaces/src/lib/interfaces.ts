@@ -11,3 +11,7 @@ export interface IDashboardService {
   gridFilterChange$: BehaviorSubject<GridFilterData>;
   gridSortChange$: BehaviorSubject<GridSortData>;
 }
+
+export interface ThirdWidgetElement extends HTMLElement {
+  dashboardService: IDashboardService;
+}
