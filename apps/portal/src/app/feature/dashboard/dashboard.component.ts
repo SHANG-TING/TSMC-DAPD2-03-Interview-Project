@@ -47,7 +47,7 @@ import { TextWidgetComponent } from './widgets/text-widget/text-widget.component
         } @if (data.type === 'super-grid') {
         <app-third-widget-loader
           tagName="super-grid-widget"
-          [props]="{ data }"
+          [attrs]="{ data }"
         ></app-third-widget-loader>
         }
       </ng-template>

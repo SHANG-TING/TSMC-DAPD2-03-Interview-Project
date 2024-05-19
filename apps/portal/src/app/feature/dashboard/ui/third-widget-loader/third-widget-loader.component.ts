@@ -35,7 +35,7 @@ export class ThirdWidgetLoaderComponent implements AfterViewInit, OnDestroy {
   tagName!: keyof typeof THIRD_WIDGET_MAP;
 
   @Input()
-  props: Record<string, unknown> = {};
+  attrs: Record<string, unknown> = {};
 
   #dashboardService = inject(DashboardService);
   #elmRef: ElementRef<HTMLElement> = inject(ElementRef);
@@ -59,7 +59,7 @@ export class ThirdWidgetLoaderComponent implements AfterViewInit, OnDestroy {
         this.#dashboardService
       );
 
-      for (const [key, value] of Object.entries(this.props)) {
+      for (const [key, value] of Object.entries(this.attrs)) {
         if (Array.isArray(value) || typeof value === 'object') {
           this.#renderer.setAttribute(elm, key, JSON.stringify(value));
         } else {
