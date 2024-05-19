@@ -28,7 +28,7 @@
 ```
 ### Logical Data Flow
 
-![image](https://github.com/SHANG-TING/TSMC-DAPD2-03-Interview-Project/assets/12579766/bc06e2a5-b91e-4e48-a6b6-9dfc0c5dc601)
+![image](https://github.com/SHANG-TING/TSMC-DAPD2-03-Interview-Project/assets/12579766/03cd8515-fe37-42bc-9fae-ad800ad499f8)
 
 ## 是否有想過其他解決方式?如果有請說明不同方式及優缺點
 
