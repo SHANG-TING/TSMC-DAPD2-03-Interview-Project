@@ -2,15 +2,16 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs';
 
-import { GridWidgetData } from '@portal/data-access/models';
-import { IDashboardService } from '@portal/shared/interfaces';
+import {
+  GridFilterData,
+  GridSortData,
+  IDashboardService,
+} from '@portal/shared/interfaces';
 
 @Injectable()
 export class DashboardService implements IDashboardService {
-  gridFilterChange$ = new BehaviorSubject<Partial<GridWidgetData>>({
+  gridFilterChange$ = new BehaviorSubject<GridFilterData>({
     name: '',
   });
-  gridSortChange$ = new BehaviorSubject<{
-    [key in keyof GridWidgetData]?: 'asc' | 'desc';
-  }>({});
+  gridSortChange$ = new BehaviorSubject<GridSortData>({});
 }

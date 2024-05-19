@@ -54,6 +54,12 @@ export class ThirdWidgetLoaderComponent implements AfterViewInit, OnDestroy {
     this.#zone.runOutsideAngular(() => {
       const elm = this.#renderer.createElement(this.tagName);
 
+      this.#renderer.setProperty(
+        elm,
+        'dashboardService',
+        this.#dashboardService
+      );
+
       for (const [key, value] of Object.entries(this.props)) {
         if (Array.isArray(value) || typeof value === 'object') {
           this.#renderer.setAttribute(elm, key, JSON.stringify(value));
@@ -62,23 +68,7 @@ export class ThirdWidgetLoaderComponent implements AfterViewInit, OnDestroy {
         }
       }
 
-      this.#renderer.setProperty(
-        elm,
-        'dashboardService',
-        this.#dashboardService
-      );
       this.#renderer.appendChild(this.#elmRef.nativeElement, elm);
-
-      this.#dashboardService.gridFilterChange$
-        .pipe(observeOn(asyncScheduler), takeUntil(this.#componentDestroyed))
-        .subscribe((detail) => {
-          elm.dispatchEvent(
-            new CustomEvent('gridFilterChange', {
-              detail,
-              bubbles: false,
-            })
-          );
-        });
     });
   }
 
