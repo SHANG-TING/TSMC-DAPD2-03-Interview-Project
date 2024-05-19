@@ -11,8 +11,7 @@ import {
   Renderer2,
 } from '@angular/core';
 
-import { asyncScheduler, Subject } from 'rxjs';
-import { observeOn, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 import { DashboardService } from '../../dashboard.service';
 
