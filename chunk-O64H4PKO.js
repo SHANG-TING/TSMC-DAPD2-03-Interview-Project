@@ -1,0 +1,1 @@
+import{c as i}from"./chunk-KSK7WFPW.js";import{p as e}from"./chunk-LOVTAMSI.js";var s=(()=>{let t=class t{constructor(){this.gridFilterChange$=new e({name:""}),this.gridSortChange$=new e({})}};t.\u0275fac=function(n){return new(n||t)},t.\u0275prov=i({token:t,factory:t.\u0275fac});let r=t;return r})();export{s as a};
