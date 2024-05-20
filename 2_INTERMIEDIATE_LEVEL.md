@@ -1,7 +1,8 @@
 # 2 Intermediate Level
 
 > 因為後續的題目，一樣會在這 repo 持續更新，所以如果只想單純驗證 2 Intermediate Level
- 的功能有沒有實現的話，麻煩請先切換 feature/2-intermidiate-level 分支
+> 的功能有沒有實現的話，麻煩請先切換 feature/2-intermidiate-level 分支
+>
 > ```
 > git checkout feature/2-intermidiate-level
 > ```
@@ -22,7 +23,7 @@ export class DashboardService {
 
 @Component({
   // ...
-  providers: [DashboardService]
+  providers: [DashboardService],
 })
 export class DashboardComponent {
   // ...
@@ -46,23 +47,18 @@ export class DashboardComponent {
   // ...
   template: `
     ...
-    <button (click)="openGridFilterDialog()">
-      Filter By Name
-    </button>
-  `
+    <button (click)="openGridFilterDialog()">Filter By Name</button>
+  `,
 })
 export class DashboardComponent {
   // ...
   openGridFilterDialog() {
     const { gridFilterChange$ } = this.#dataService;
-    const dialogRef = this.#dialog.open<Partial<GridWidgetData>>(
-      AppGridFilterDialogComponent,
-      {
-        minWidth: '300px',
-        data: gridFilterChange$.value,
-        disableClose: true,
-      }
-    );
+    const dialogRef = this.#dialog.open<Partial<GridWidgetData>>(AppGridFilterDialogComponent, {
+      minWidth: '300px',
+      data: gridFilterChange$.value,
+      disableClose: true,
+    });
     dialogRef.closed.subscribe((data) => {
       if (!data) return;
       gridFilterChange$.next({
@@ -75,36 +71,33 @@ export class DashboardComponent {
 ```
 
 > 這邊也可以自己做一個 DialogService (使用 CDK 的 Overlay 和 Portal 實現一樣的效果)
+>
 > ```typescript
 > import { Overlay, ComponentType } from '@angular/cdk/overlay';
 > import { ComponentPortal } from '@angular/cdk/portal';
 > import { Injectable, Injector, inject } from '@angular/core';
-> 
+>
 > import { DialogRef } from './dialog-ref';
 > import { DIALOG_DATA } from './dialog-tokens';
-> 
+>
 > export interface DialogConfig {
 >   data?: any;
 > }
-> 
+>
 > @Injectable({
 >   providedIn: 'root',
 > })
 > export class DialogService {
 >   #overlay = inject(Overlay);
 >   #injector = inject(Injector);
-> 
+>
 >   /**
 >    * Open a custom component in an overlay
 >    */
 >   open<T>(component: ComponentType<T>, config?: DialogConfig): DialogRef {
 >     // Globally centered position strategy
->     const positionStrategy = this.#overlay
->       .position()
->       .global()
->       .centerHorizontally()
->       .centerVertically();
-> 
+>     const positionStrategy = this.#overlay.position().global().centerHorizontally().centerVertically();
+>
 >     // Create the overlay with customizable options
 >     const overlayRef = this.#overlay.create({
 >       positionStrategy,
@@ -112,10 +105,10 @@ export class DashboardComponent {
 >       backdropClass: 'overlay-backdrop',
 >       panelClass: 'overlay-panel',
 >     });
-> 
+>
 >     // Create dialogRef to return
 >     const dialogRef = new DialogRef(overlayRef);
-> 
+>
 >     // Create injector to be able to reference the DialogRef from within the component
 >     const injector = Injector.create({
 >       parent: this.#injector,
@@ -124,11 +117,11 @@ export class DashboardComponent {
 >         { provide: DIALOG_DATA, useValue: config?.data },
 >       ],
 >     });
-> 
+>
 >     // Attach component portal to the overlay
 >     const portal = new ComponentPortal(component, null, injector);
 >     overlayRef.attach(portal);
-> 
+>
 >     return dialogRef;
 >   }
 > }
@@ -155,7 +148,7 @@ export class DashboardComponent {
         }
       </tody>
     </table>
-  `
+  `,
 })
 export class GridWidgetComponent {
   // ...
@@ -163,11 +156,7 @@ export class GridWidgetComponent {
     map((filterData) => {
       const dataItems = this.data.options.data ?? [];
 
-      if (
-        this.data.options.headers?.every(
-          (header) => !(header.fieldId in filterData)
-        )
-      ) {
+      if (this.data.options.headers?.every((header) => !(header.fieldId in filterData))) {
         return dataItems;
       }
 
@@ -176,11 +165,7 @@ export class GridWidgetComponent {
       }
 
       return dataItems.filter((item) => {
-        return Object.entries(filterData).every(([key, value]) =>
-          item[key as keyof GridWidgetData]
-            ?.toLowerCase()
-            .includes(value?.toLowerCase())
-        );
+        return Object.entries(filterData).every(([key, value]) => item[key as keyof GridWidgetData]?.toLowerCase().includes(value?.toLowerCase()));
       });
     })
   );
@@ -188,7 +173,7 @@ export class GridWidgetComponent {
 ```
 
 > 如果想優化過濾性能，可以搭配 RxJS Operators
-> 
+>
 > 像是 `distinctUntilChanged` 可以 skip 掉重複的過濾資料
 >
 > 常見的還有 `debounceTime`，但我想不太適合這個場景，它還是比較適合像是 input 事件（觸發頻率高的狀況）

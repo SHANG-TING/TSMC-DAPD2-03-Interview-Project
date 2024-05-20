@@ -3,6 +3,7 @@
 ## 整體架構的設計方向
 
 這次主要是以 dynamic import 的方式，而不是以動態建立 script tag 的方式去載入第三方元件
+
 > 另外 dynamic import 也可以隨時搭配 Module Federation 定義 remoteEntry.js 來搭配（但這通常是希望能在 browser 整合來自不同 domain 的元件），所以這次就是單純 lazy-load 同 domain 的 chunk.js 而已。
 
 ### Monorepo Structure
@@ -26,6 +27,7 @@
 │   │   └── useGridSettings.ts # 訂閱 gridFilterChange 和 gridSortChange，且透過 React Re-render 的特性來同步資料
 │   └── SuperGridWidget.tsx # 實作元件，以及定義 Custom Element Tag <super-grid-widget>
 ```
+
 ### Logical Data Flow
 
 ![image](https://github.com/SHANG-TING/TSMC-DAPD2-03-Interview-Project/assets/12579766/03cd8515-fe37-42bc-9fae-ad800ad499f8)
@@ -35,6 +37,7 @@
 ### 解決方式 1
 
 可以實作一個 renderReact 的 Directive，就可以在 Angular 專案裡面渲染 React Component
+
 > 如果這邊再搭配 dynamic import 的話，效果其實也很接近我目前的方案，頂多差在不是 Shadow DOM 而已
 
 ```
@@ -75,6 +78,7 @@ export class RenderReactDirective<Comp extends ElementType> {
 以前我們會在 Angular Library 透過 ngx-build-plus 來 Single Bundle 出一個 bundle.js，就可以透過 web-component-loader 去動態建立 Script Tag 去載入對應元件的 bundle.js
 
 > 不過現在 esbuild 也可以實現在 Signle Bundle 的效果，理論上也可以應用在所有框架的元件上
+>
 > ```
 > esbuild libs/thrid-widgets/super-grid-widget/src/lib/index.ts --bundle --minify --sourcemap --outfile=dist/portal/browser/thrid-widgets/super-grid-widget/bundle.js
 > ```
@@ -138,15 +142,19 @@ https://single-spa.js.org/
 ## 請根據設計出來的架構嘗試回答題說明目中的「進階申論」問題
 
 ### 1. dashboard 團隊如何與 widget 團隊進行溝通 (如元件溝通介面設計、widget 如何註冊
+
 進 dashboard 等)?
 
 ### 2. 整體架構上是否可能有效能問題 (performance issue),如果有預想到的問題,當真正發
+
 生時該如何優化?
 
 ### 3. 如果遇到了效能問題,如何監控並證明問題來自 dashboard 開發團隊還是 widget 開發
+
 團隊?
 
 ### 4. 原來的 grid widget 功能,希望能針對特定某個 column 呈現進行客製化,且 column
+
 客製化也希望交由外部團隊開發;你會怎麼設計?
 
 ### 5. 如果 widget 之間需要有互相溝通的需求,例如 super-grid widget 特定欄位排序後,

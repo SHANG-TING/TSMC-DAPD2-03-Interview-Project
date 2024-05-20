@@ -10,6 +10,7 @@ npm start
 ```
 
 > 因為後續的題目，一樣會在這 repo 持續更新，所以如果只想單純驗證 1 ENTRY LEVEL 的功能有沒有實現的話，麻煩請先切換 `feature/1-entry-level` 分支
+>
 > ```
 > git checkout feature/1-entry-level
 > ```
@@ -38,7 +39,7 @@ wallaby.js
 
 ```
 ├── apps/portal/src/app
-│   ├── feature/dashboard 
+│   ├── feature/dashboard
 │   │   ├── widgets # 定義對應 widget type 的元件
 │   │   │   ├──  grid-widget.component.ts
 │   │   │   └──  text-widget.component.ts
