@@ -365,13 +365,13 @@ const THIRD_WIDGET_MAP = {
 }
 ```
 
-但是如果只把 opacity 從 0 改成 0.01 就可以提前/修復 LCP 的觸發時間
+但是如果只把 opacity 從 0 改成 0.1 就可以提前/修復 LCP 的觸發時間
 
 https://www.debugbear.com/blog/opacity-animation-poor-lcp
 
 ```css
 .slider {
-  opacity: 0;
+  opacity: 0.1;
 }
 ```
 
