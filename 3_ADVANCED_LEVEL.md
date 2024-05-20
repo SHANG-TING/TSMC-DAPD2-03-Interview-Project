@@ -295,7 +295,7 @@ const THIRD_WIDGET_MAP = {
 </app-grid-widget>
 ```
 
-> 有需要我實作的話，我可以再補上～
+> 有需要實作的話，我可以再補上～
 
 ### 5. 如果 widget 之間需要有互相溝通的需求,例如 super-grid widget 特定欄位排序後, 所有 grid 和 super-grid widget 只要有相同名稱欄位都需要排序; 你會怎麼設計?
 
@@ -334,6 +334,8 @@ const THIRD_WIDGET_MAP = {
     )
   );
 ```
+
+> 有需要實作的話，我可以再補上～
 
 ### 6. 任何其他想法或建議,自由發揮
 
