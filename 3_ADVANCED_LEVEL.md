@@ -126,8 +126,8 @@ https://single-spa.js.org/
 #### 優點 ✅
 
 - 在 Micro-Frontend 小圈圈很流行（有幾個大神維護者）
-- 文件很豐富（雖然有點混亂 / 細節壓倒性得多）
-- 子應用包裝器小巧易用 parcel
+- 文件很豐富（雖然有點混亂 / 細節超級多...）
+- 這個子應用包裝器 parcel 看起來很不錯 XD
   - https://single-spa.js.org/docs/parcels-overview#parcel-configuration
 - 類似 CRA 的項目引導程式配置 webpack，應該是不用搞太多客製化的 webpack rule 或 plugins
 
