@@ -4,24 +4,26 @@
 
 這次主要是以 dynamic import 的方式，而不是以動態建立 script tag 的方式去載入第三方元件
 
-> 另外 dynamic import 也可以隨時搭配 Module Federation 定義 remoteEntry.js 來搭配，但這次只是單純 lazy-load 同 domain 的 chunk.js 而已。
+> 另外 dynamic import 也可以隨時搭配 Module Federation 定義 remoteEntry.js 來實現獨立打包部署的效果。
+>
+> 但這次只是單純 lazy-load 同 domain 的 chunk.js 而已，還是會需要依賴 portal 的打包。
 
 ### Monorepo Structure
 
-```
+```text
 ├── app/portal # 主要 app
 │   └── src/app
 │       ├── app.component.html # 配置 router-outlet
 │       └── app.routes.ts # 配置 dashboard route
 ├── libs/feature/dashboard/src/lib
 │   ├── ui
-│   │   └── thrid-widget-loader/*.* # 在畫面上建立對應的 Custom Element Tag，並透過 Dynamic Import 來實現 Lazy-load 第三方 Component 的效果
+│   │   └── third-widget-loader/*.* # 在畫面上建立對應的 Custom Element Tag，並透過 Dynamic Import 來實現 Lazy-load 第三方 Component 的效果
 │   ├── widgets
 │   │   ├── grid-widget/*.*
 │   │   └── text-widget/*.*
-│   ├── dashboard.component.ts # 在 gridbox 裡，根據 Widget Type 配置 grid-widget 或 text-widget 以及 thrid-widget-loader
-│   └── dashboard.service.ts # 主要是 Widget 可以資料共享的地方（包含 thrid-widgets），但我會透過放在 Custom Element 的 Property 裡面，讓第三方 Component 可以訂閱資料變化
-├── libs/thrid-widgets/super-grid-widget/src/lib
+│   ├── dashboard.component.ts # 在 gridbox 裡，根據 Widget Type 配置 grid-widget 或 text-widget 以及 third-widget-loader
+│   └── dashboard.service.ts # 主要是 Widget 可以資料共享的地方（包含 third-widgets），但我會透過放在 Custom Element 的 Property 裡面，讓第三方 Component 可以訂閱資料變化
+├── libs/third-widgets/super-grid-widget/src/lib
 │   ├── hooks
 │   │   ├── useDashboardService.ts # 取得 shadowRoot.host.dashboardService
 │   │   └── useGridSettings.ts # 訂閱 gridFilterChange 和 gridSortChange，且透過 React Re-render 的特性來同步資料
@@ -77,10 +79,10 @@ export class RenderReactDirective<Comp extends ElementType> {
 
 以前我們會在 Angular Library 透過 ngx-build-plus 來 Single Bundle 出一個 bundle.js，就可以透過 web-component-loader 去動態建立 Script Tag 去載入對應元件的 bundle.js
 
-> 不過現在 esbuild 也可以實現在 Signle Bundle 的效果，理論上也可以應用在所有框架的元件上
+> 不過現在 esbuild 也可以實現在 Single Bundle 的效果，理論上也可以應用在所有框架的元件上
 >
 > ```
-> esbuild libs/thrid-widgets/super-grid-widget/src/lib/index.ts --bundle --minify --sourcemap --outfile=dist/portal/browser/thrid-widgets/super-grid-widget/bundle.js
+> esbuild libs/third-widgets/super-grid-widget/src/lib/index.ts --bundle --minify --sourcemap --outfile=dist/portal/browser/third-widgets/super-grid-widget/bundle.js
 > ```
 
 但我們還需要降低這些元件的 bundle size，我們通常還會設定 externals，類似:
@@ -108,12 +110,13 @@ esbuild.build({
 
 #### 優點 ✅
 
+- 這是可以完美實現，每個 child application 自己能獨立部署，且在 browser 上整合起來，這是大勝 Dynamic Import 的部分，除非我們有用 Module Federation 來彌補這塊
 - 只要能拿到完整的 https://portal.my_domain.com/assets/thrid-widgets/super-grid-widget/bundle.js，我就可以隨意使用 super-grid-widget，前提要能滿足 externals 的那些條件
 
 #### 缺點 ❌
 
-- 因為變成多個 App 要打包，會需要 NX 指令 `nx run-many --target build --parallel` 加速打包
-- 我想開發體驗來說，肯定沒有使用 dynamic import 來得好，除非現在 `nx build target --watch` 的速度真的很快的話，那也許還可以 XD
+- 因為變成多個 application 要打包，會需要 NX 指令 `nx run-many --target build --parallel` 加速打包
+- 我想開發體驗來說，肯定沒有使用 dynamic import 來得好，除非現在 `nx build target --watch` 的速度真的很快的話，那也許體驗上不會太差
 
 ### 解決方式 3
 
@@ -121,19 +124,19 @@ Single SPA
 
 https://single-spa.js.org/
 
-> 我只有玩過簡單的範例專案，沒用在 production 上 ＸＤ
+> 我只有玩過簡單的範例專案，沒用在 production 上
 
 #### 優點 ✅
 
-- 在 Micro-Frontend 小圈圈很流行（有幾個大神維護者）
+- 在 Micro-Frontend 小圈圈很流行（有幾個大神級別的 Contributor)
 - 文件很豐富（雖然有點混亂 / 細節超級多...）
-- 這個子應用包裝器 parcel 看起來很不錯 XD
+- 這個子應用包裝器 parcel 看起來很方便
   - https://single-spa.js.org/docs/parcels-overview#parcel-configuration
 - 類似 CRA 的項目引導程式配置 webpack，應該是不用搞太多客製化的 webpack rule 或 plugins
 
 #### 缺點 ❌
 
-- 就是一個很高客製化的 Framework，有一定的學習曲線 XD
+- 就是一個很高客製化的 Framework，有一定的學習曲線
 - 太多的 Webpack magic
 - 依靠 SystemJS 將子應用程式腳本載入到父應用程式腳本中（SystemJS 不再那麼流行了，原生模組僅在 Webpack 5 中出現）
 - 關於 CSS 的配置，好像在文件很少提到？
@@ -145,7 +148,7 @@ https://single-spa.js.org/
 
 #### Step 1
 
-可以先用 nx generate library （記得選前端框架）建立一個 Library，然後一定要定義且 export 出來一個名為 definedCustomElement 的 Function
+可以先用 nx generate @nx/react:library（記得選您要的前端框架）建立一個 Library，然後一定要定義且 export 出來一個名為 definedCustomElement 的 Function
 
 ```typescript
 export function definedCustomElement() {
@@ -155,19 +158,20 @@ export function definedCustomElement() {
     return;
   }
 
-  const xxxThridWidget = r2wc(XxxThridWidget, React, ReactDOM, {
+  // 這邊你可以換成您要的前端框架，去註冊 Custom Elements，例如 Angular 有自己的 Angular Elements 可以註冊
+  const xxxThirdWidget = r2wc(XxxThirdWidget, React, ReactDOM, {
     props: {
       data: 'json',
     },
     shadow: 'open',
   });
-  customElements.define(tagName, xxxThridWidget);
+  customElements.define(tagName, xxxThirdWidget);
 }
 ```
 
 #### Step 2
 
-目前實作來說，我是先在 thrid-widget-loader.component.ts 有定義 `THIRD_WIDGET_MAP` 來存放 dynamic import function by tag name 的資訊
+目前實作來說，我是先在 third-widget-loader.component.ts 有定義 `THIRD_WIDGET_MAP` 來存放 dynamic import function by tag name 的資訊
 
 ```typescript
 const THIRD_WIDGET_MAP = {
@@ -180,7 +184,7 @@ const THIRD_WIDGET_MAP = {
 } as const;
 ```
 
-> 但 `THIRD_WIDGET_MAP` 其實可以抽到 `@portal/shared/constants` 之類的 Library 
+> 但 `THIRD_WIDGET_MAP` 其實可以抽到 `@portal/shared/constants` 之類的 Library
 
 #### Step 3
 
@@ -189,9 +193,9 @@ const THIRD_WIDGET_MAP = {
 ```html
 <app-gridbox [config]="config">
   <ng-template #widget let-data>
-    @if (thridWidgetTypes.includes(widget.type)) {
+    @if (thirdWidgetTypes.includes(widget.type)) {
       <app-third-widget-loader
-        [tagName]="getTagNameByType(widet.type)"
+        [tagName]="getTagNameByType(widget.type)"
         [attrs]="{ data }"
       ></app-third-widget-loader>
     } @else {
@@ -206,11 +210,11 @@ const THIRD_WIDGET_MAP = {
 </app-gridbox>
 ```
 
-> 這邊稍微簡化一下代碼，這應該跟 Repo 的 Code 不一樣，沒有 thridWidgetTypes 跟 getTagNameByType
-> 
-> 但我只是想要表達，其實我們整合 thrid widgets 只需要走到 Step 2 的流程就可以了！
+> 這邊稍微簡化一下代碼，這應該跟 Repo 的 Code 不一樣，沒有 thirdWidgetTypes 跟 getTagNameByType
 >
-> 不需要每次新增 thrid widget 都要來改這邊的 template
+> 但我只是想要表達，其實我們整合 third widgets 只需要走到 Step 2 的流程就可以了！
+>
+> 不需要每次新增 third widget 都要來改這邊的 template
 
 ### 2. 整體架構上是否可能有效能問題 (performance issue),如果有預想到的問題,當真正發生時該如何優化?
 
@@ -221,9 +225,9 @@ const THIRD_WIDGET_MAP = {
 ---
 
 > ⭐️ 另外可以使用 CSS 属性 [content-visibility](https://web.dev/content-visibility/) 和 [contain](https://developer.mozilla.org/zh-CN/docs/Web/CSS/contain)
-> 
+>
 > `content-visibility:auto` 定義如果該元素當前不在可視窗內，則不會渲染其後代元素，類似 DOM 的懶渲染;
-> 
+>
 > 此屬性可以應用在 DOM 樹嵌套較深及節點數量繁重的長列表中，可以節省 Rendering 時間，優化 DOMContentLoaded 指標;
 >
 > ```css
@@ -236,7 +240,7 @@ const THIRD_WIDGET_MAP = {
 > ![image](https://github.com/SHANG-TING/TSMC-DAPD2-03-Interview-Project/assets/12579766/d19ad036-a80a-4ef8-96bf-763b01f06b23)
 >
 > contain 屬性允許我們指定特定的 DOM 元素和它的子元素，讓它們能夠獨立於整個 DOM 樹結構之外。目的是能夠讓瀏覽器有能力只對部分元素進行重繪、重排，而不必每次都針對整個頁面。
-> 
+>
 > ```css
 > .gridbox-item-content {
 >   contain: layout; // 聲明當前元素裡面的佈局不會受外部的元素影響;
@@ -245,17 +249,17 @@ const THIRD_WIDGET_MAP = {
 > }
 > ```
 >
-> 🔥 基本上 CSS 技巧，也可以通用到每個 Widget 裡面去配置，我覺得很棒的技巧（如果又用 tailwindcss 的話，使用起來更方便～）
+> 🔥 基本上 CSS 技巧，也可以通用到每個 Widget 裡面去配置，我覺得很棒的技巧（如果又搭配 Tailwind CSS 的話，使用起來更方便～）
 
 #### Q2. 遇到頁面卡頓的話，有可能是某處 JS Long Task 的問題
 
-如果我們在畫面上操作會卡卡的話，可以先打開 DevTools 的 Performance 觀察一下，有沒有什麼黑魔法 JS 在搞鬼
+如果我們在畫面上操作會卡卡的話，可以先打開 DevTools 的 Performance 觀察一下，有沒有什麼黑魔法 JS 在搞鬼。
 
 只是這也只能快速幫你查到是哪個 js 有這問題，實際上要解決這個問題，還是需要細看裡面的資料流和邏輯，具體要怎麼把 Long Task 切小，這真的要看情況...
 
-因為就算我們懂得配置 debounce、distinctuntilchanged、throttle、bufferTime、exhaustMap、animationframescheduler 等等，不知道邏輯切入點，還是白搭 QQ
+因為就算我們懂得配置 debounce、distinctUntilChanged、throttle、bufferTime、exhaustMap、animationFrameScheduler 等等技巧去優化，但不知道邏輯切入點，還是無法有效解決問題。
 
-所以這題只能根據實際上遇到去做對應的優化這樣，沒有正確答案 orz
+所以這題只能根據實際上遇到去做對應的優化這樣，沒有正確答案。
 
 ![image](https://github.com/SHANG-TING/TSMC-DAPD2-03-Interview-Project/assets/12579766/92dfe37e-7a93-4860-bcb8-fc4cdc668bd4)
 
@@ -278,7 +282,7 @@ const THIRD_WIDGET_MAP = {
 
 ### 4. 原來的 grid widget 功能,希望能針對特定某個 column 呈現進行客製化,且 column 客製化也希望交由外部團隊開發;你會怎麼設計?
 
-基本上善用 Structural Direcitve 和 ContentChild 以及呼叫 ViewContainer 的 createEmbeddedView(...) 塞 context，應該就能完美實現整個功能。
+基本上善用 Structural Directive 和 ContentChild 以及呼叫 ViewContainer 的 createEmbeddedView(...) 塞 context，應該就能完美實現整個功能。
 
 ```html
 <app-grid-widget [data]="data">
@@ -288,7 +292,7 @@ const THIRD_WIDGET_MAP = {
     <app-third-widget-loader
       tagName="app-grid-role"
       [attrs]="{
-        value: columnData.value 
+        value: columnData.value
       }"
     ></app-third-widget-loader>
 
@@ -343,11 +347,13 @@ const THIRD_WIDGET_MAP = {
 
 #### a. 選擇適合自己的微前端架構
 
-之前實作微前端專案的經驗，會遇到客戶他們已經有很多穩定的專案，但可能那是 JSP 或者 ASP.NET MVC 專案，結果後來折衷解法是，舊專案還是以 iframe 跟 postMessage 來進行整合，哈哈 🫠
+之前實作微前端專案的經驗，會遇到客戶他們已經有很多穩定的專案，但可能那是 JSP 或者 ASP.NET MVC 專案，結果後來折衷解法是，舊專案還是以 iframe 跟 postMessage 來進行整合
 
-> 所以我覺得微前端並沒有什麼架構是最為理想的，真的也是跟著需求或者開發的組織文化，一直迭代下去，找到一個相對適合的架構去開發，所以之前也有因為這樣，而寫一篇小小心得 XD
-> 
+> 所以我覺得微前端並沒有什麼架構是最為理想的，真的也是跟著需求或者開發的組織文化，一直迭代下去，找到一個相對適合的架構去開發; 所以之前遇到這樣的情況，而寫一篇小小心得
+>
 > https://blog.neilxie.net/posts/choose_the_right_micro-frontend_architecture_for_you
+>
+> 甚至可能不需要導入微前端，那對組織來說，反而是好事？
 
 #### b. 想補充關於 Web Vitals 的部分 (因為上面有提到 Performance 的問題，想說補充小東西)
 
@@ -375,6 +381,22 @@ https://www.debugbear.com/blog/opacity-animation-poor-lcp
 }
 ```
 
-> 因為我是目前是在電商工作，真的發現 CSS 能解決許多 WebVitals 的問題，像是配置 img 的 fetchpriority 也是 
+> 真的發現 CSS 能解決許多 WebVitals 的問題，像是配置 img 的 fetchpriority 也是
 
+#### c. 關於每個 application 自己能獨立打包部署這件事情
 
+現在目前 Repo 這邊頂多可以把 @portal/third-widgets/super-grid-widget 獨立上傳到 NPM Server，但是還是會依賴 portal 要去做打包這件事情。
+
+> 我想 Module Federation 是可以補強這塊，一樣可以透過 Dynamic Import 載入 Third Widgets，但可以獨立部署。
+
+**順便分享之前實作 Angular 微前端的方案**
+
+主要使用 [ngx-planet](https://github.com/worktile/ngx-planet)，這也是每個 Angular Application 能自己能獨立打包部署的方案，另外它的開發體驗非常優秀
+
+- JIT: 當 portal ng serve 和 app1 ng serve 時
+  - portal (http://localhost:4200/app1) 它可以指定某個路由下，去動態載入 & 解析 app1 (http://localhost:4201/static/app1/main.js)
+  - 而且可以幫 app1 在 ng serve 時配置 `--public-host`，我們再開發 app1 的存擋動作，也可以去觸發 portal (http://localhost:4200) Reload 網頁
+- AOT: 當 portal ng build --prod 和 app1 ng build --prod 時
+  - portal (https://portal.my_domain.com/app1) 它可以指定某個路由下，去動態載入 & 解析 app1 (https://portal.my_domain.com/static/app1/main.js)
+
+> 基本上開發體驗來說，肯定會大勝使用 Script Tag 去載入 Web Component 的方案，但這只屬於純粹的 Angular 專案而已。
