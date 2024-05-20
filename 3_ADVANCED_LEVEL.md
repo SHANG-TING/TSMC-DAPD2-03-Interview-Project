@@ -373,5 +373,6 @@ https://www.debugbear.com/blog/opacity-animation-poor-lcp
 }
 ```
 
+> 因為我是目前是在電商工作，真的發現 CSS 能解決許多 WebVitals 的問題，像是配置 img 的 fetchpriority 也是 
 
 
