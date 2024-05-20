@@ -16,7 +16,8 @@
           "react-dom/client",
           "react-is",
           "shallowequal",
-          "hoist-non-react-statics"
+          "hoist-non-react-statics",
+          "classnames"
         ],
         "outputPath": "dist/apps/portal",
         "index": "apps/portal/src/index.html",
