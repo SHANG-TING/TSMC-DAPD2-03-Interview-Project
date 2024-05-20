@@ -216,7 +216,9 @@ const THIRD_WIDGET_MAP = {
 
 #### Q1. 最常見的問題，實際渲染的 Widget 太多，造成畫面卡頓
 
-基本上可以搭配 Intersection Observer，去偵測 grid-item 出現在可視範圍內，才去載入 ng-template，所以這可以直接 gridbox 元件上直接優化
+基本上可以搭配 Intersection Observer，去偵測 grid-item 曾有出現在可視範圍內，才去載入 ng-template，所以這可以直接 gridbox 元件上直接優化
+
+---
 
 > ⭐️ 另外可以使用 CSS 属性 [content-visibility](https://web.dev/content-visibility/) 和 [contain](https://developer.mozilla.org/zh-CN/docs/Web/CSS/contain)
 > 
